@@ -4,6 +4,10 @@ const context = canvas.getContext('2d') ;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
+// Create Linear Gradient
+
+
 class Symbol
 {
     constructor(x,y, fontSize, canvasHeight)
@@ -17,8 +21,7 @@ class Symbol
     }
     draw(context)
     {
-        this.text = this.characters.charAt(Math.floor(Math.random() * this.characters.length));
-        context.fillStyle = "green";
+        this.text = this.characters.charAt(Math.floor(Math.random() * this.characters.length));       
         context.fillText(this.text, this.x * this.fontSize, this.y * this.fontSize);
         if(this.y * this.fontSize > this.canvasHeight && Math.random() > 0.8)
         {
@@ -51,17 +54,63 @@ class Effect
 
         }
     }
+
+
+    resize(width, height)
+    {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        this.columns  =  this.columns = this.canvasWidth/this.fontSize;
+        this.symbols = [];
+        this.#initialize();
+    }
+
 }
 
 const effect = new Effect(canvas.width, canvas.height);
+let lastTime = 0;
+const fps = 230;
+const nextFrame = 1000/fps;
+let timer = 0;
 
-function animate()
+
+//delta time = difference in millisec between previous animation frame and the current animation frame
+function animate(timestamp)
 {
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    if(timer > nextFrame)
+    {
+
     context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    context.textAlign = "center";
     context.fillRect(0,0, canvas.width,canvas.height);
+    context.fillStyle = "green";
     context.font = effect.fontSize + 'px monospace';
     effect.symbols.forEach(symbol => symbol.draw(context));
+    timer = 0;
+
+    }
+    else
+    {
+        timer+=deltaTime;
+    }
+
+    
    requestAnimationFrame(animate);
 }
 
-animate();
+animate(0);
+
+
+canvas.addEventListener("resize" ,function()
+    {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    effect.resize(canvas.width, canvas.height);
+   // resize();
+    }
+
+);
+
