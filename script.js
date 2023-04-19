@@ -4,7 +4,7 @@ const context = canvas.getContext('2d') ;
 canvas.width = window.outerWidth;
 canvas.height = window.outerHeight;
 
-
+/*
 // Create Linear Gradient
 let gradient = context.createLinearGradient(0,canvas.width, canvas.height, 0);
 gradient.addColorStop(0,"red");
@@ -13,8 +13,19 @@ gradient.addColorStop(0.4,"yellow");
 gradient.addColorStop(0.6,"magenta");
 gradient.addColorStop(0.8,"pink");
 gradient.addColorStop(1,"cyan");
+*/
 
-//Create Radial Gradient
+
+//Create Radial Gradient  --> let Rgradient = context.createRadialGradient(x, y, r1, x2, y2, r2 );
+let  Rgradient = context.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, 500 );
+Rgradient.addColorStop(0,"red");
+Rgradient.addColorStop(0.2,"green");
+Rgradient.addColorStop(0.4,"yellow");
+Rgradient.addColorStop(0.6,"magenta");
+Rgradient.addColorStop(0.8,"pink");
+Rgradient.addColorStop(1,"cyan");
+
+
 
 class Symbol
 {
@@ -77,7 +88,7 @@ class Effect
 
 const effect = new Effect(canvas.width, canvas.height);
 let lastTime = 0;
-const fps = 230;
+const fps = 80;
 const nextFrame = 1000/fps;
 let timer = 0;
 
@@ -94,7 +105,7 @@ function animate(timestamp)
     context.fillStyle = 'rgba(0, 0, 0, 0.05)';
     context.textAlign = "center";
     context.fillRect(0,0, canvas.width,canvas.height);
-    context.fillStyle = gradient  //"green"; 
+    context.fillStyle = Rgradient  //"green"; 
     context.font = effect.fontSize + 'px monospace';
     effect.symbols.forEach(symbol => symbol.draw(context));
     timer = 0;
@@ -117,7 +128,15 @@ canvas.addEventListener("resize" ,function()
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     effect.resize(canvas.width, canvas.height);
-   // resize();
+    // resize();
+Rgradient = context.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, 500 );
+Rgradient.addColorStop(0,"red");
+Rgradient.addColorStop(0.2,"green");
+Rgradient.addColorStop(0.4,"yellow");
+Rgradient.addColorStop(0.6,"magenta");
+Rgradient.addColorStop(0.8,"pink");
+Rgradient.addColorStop(1,"cyan");
+
     }
 
 );
